@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div class='mb-5'>
+        <div>
+            <h2 class="fs-1 fw-bolder">Profile</h2>
+            <p>Your-name: {{ request.user.username }}</p>
+            <p>Email: {{ request.user.email }}</p>
+            <p>Balance: {{ profile.balance }}</p>
+            </div>
+
+            <p>
+            <a href="{% url 'deposit' %}" class="btn btn-success">DEPOSIT NOW</a>
+            </p>
+
+        
+    </div>
+    
+    
+    <h2>Your Borrowing History</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Book</th>
+                <th scope="col">Borrowed On</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for borrowing in borrowing_history %}
+            <tr>
+                <td>{{ borrowing.book.title }}</td>
+                <td>{{ borrowing.borrowing_date|date:"Y-m-d H:i" }}</td> 
+                <td>
+                    {% if borrowing.returned %}
+                        <span class="badge bg-success">Returned</span>
+                    {% else %}
+                        <span class="badge bg-warning">Not Returned</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not borrowing.returned %}
+                        <a href="{% url 'return_book' borrowing.id %}" class="btn btn-primary">Return this book</a>
+                    {% else %}
+                        <span class="text-muted">Returned</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

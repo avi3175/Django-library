@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ book.title }}</h2>
+  <p>{{ book.description }}</p>
+  <p>Price: {{ book.borrowing_price }} Taka</p>
+  <p>Category: {{ book.category }}</p>
+
+  <h3>Reviews</h3>
+  <ul>
+    {% for review in reviews %}
+      <li>
+        <strong>{{ review.user.username }}:</strong> {{ review.review_text }} - Rating: {{ review.rating }}/5
+      </li>
+    {% empty %}
+      <li>No reviews yet.</li>
+    {% endfor %}
+  </ul>
+
+  {% if user.is_authenticated %}
+    <h3>Leave a Review</h3>
+    <form method="POST" action="{% url 'review_book' book.id %}">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Write your review here..." required></textarea><br>
+      <label for="rating">Rating:</label>
+      <select name="rating" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select><br>
+      <button type="submit">Submit Review</button>
+    </form>
+  {% endif %}
+{% endblock %}
