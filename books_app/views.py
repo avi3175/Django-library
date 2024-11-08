@@ -5,13 +5,9 @@ from django.contrib import messages
 from users_app.models import Borrowing
 
 def book_list(request):
-    # Get all books
+    
     books = Book.objects.all()
-
-    # Get all categories to display in the filter
     categories = Category.objects.all()
-
-    # Get selected category from query parameters
     selected_category = request.GET.get('category')
 
     if selected_category:
@@ -25,10 +21,10 @@ def book_list(request):
 
 
 def review_book(request, book_id):
-    book = Book.objects.get(id=book_id)  # Get the book
-    user_profile = request.user.profile  # Get the user's profile
+    book = Book.objects.get(id=book_id) 
+    user_profile = request.user.profile  
 
-    # Check if the user has borrowed the book
+    
     borrowed_book = Borrowing.objects.filter(user=request.user, book=book, returned=False).first()
 
     if not borrowed_book:
@@ -39,7 +35,7 @@ def review_book(request, book_id):
         review_text = request.POST['content']
         rating = int(request.POST['rating'])
 
-        # Create the review
+       
         review = Review.objects.create(
             user=request.user,
             book=book,
@@ -58,6 +54,6 @@ def review_book(request, book_id):
 
 
 def book_detail(request, book_id):
-    book = Book.objects.get(id=book_id)  # Get the book
-    reviews = book.reviews.all()  # Get all reviews for this book
+    book = Book.objects.get(id=book_id)  
+    reviews = book.reviews.all()  
     return render(request, 'books_app/book_detail.html', {'book': book, 'reviews': reviews})
