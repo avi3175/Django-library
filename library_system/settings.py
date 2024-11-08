@@ -145,3 +145,13 @@ EMAIL_PORT = 587
 
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+CSRF_COOKIE_SECURE = True
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-library-2xjr.onrender.com',
+    'https://your-custom-domain.com',  # If you use a custom domain
+]
